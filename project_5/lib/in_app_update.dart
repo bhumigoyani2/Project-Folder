@@ -13,12 +13,6 @@ class AppUpdate extends StatefulWidget {
 }
 
 class _AppUpdateState extends State<AppUpdate> {
-
-  @override
-  void initState() {
-    fetchAppConfig();
-  }
-
   fetchAppConfig() {
     FirebaseFirestore.instance
         .collection('appConfig')
@@ -33,19 +27,37 @@ class _AppUpdateState extends State<AppUpdate> {
         String version = packageInfo.version;
 
         if (version != data['version']) {
+          // ignore: use_build_context_synchronously
           Navigator.push(
-              context, MaterialPageRoute(
+              context,
+              MaterialPageRoute(
                 builder: (context) => UpdateScreen(appConfig: data),
               ));
-        }else{
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const MyApp(),));
+        } else {
+          // ignore: use_build_context_synchronously
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const MyApp(),
+              ));
         }
-      }else if(data['maintain_update'] == true){
+      } else if (data['maintain_update'] == true) {
         //
-      }else{
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const MyApp(),));
+      } else {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const MyApp(),
+            ));
       }
     });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchAppConfig();
   }
 
   @override
@@ -77,13 +89,24 @@ class _UpdateScreenState extends State<UpdateScreen> {
           Text("${widget.appConfig['update_msg']}"),
           ElevatedButton(
               onPressed: () {
-                launchUrl(Uri.parse("${widget.appConfig['launch_url']}"));
+                launchUrl(
+                  Uri.parse(
+                    "${widget.appConfig['launch_url']}",
+                  ),
+                );
               },
               child: const Text("Update")),
-          if(widget.appConfig['soft_update'] == true)
-            ElevatedButton(onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const MyApp(),));
-            }, child: const Text("Skip")),
+          if (widget.appConfig['soft_update'] == true)
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MyApp(),
+                    ));
+              },
+              child: const Text("Skip"),
+            ),
         ],
       ),
     );
