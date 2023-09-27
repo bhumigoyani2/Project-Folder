@@ -15,7 +15,7 @@ class AppUpdate extends StatefulWidget {
 class _AppUpdateState extends State<AppUpdate> {
   fetchAppConfig() {
     FirebaseFirestore.instance
-        .collection('appConfig')
+        .collection('app_config')
         .doc('uLUeLryXxT1dHu6dauJz')
         .get()
         .then((value) async {
